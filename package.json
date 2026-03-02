@@ -1,0 +1,34 @@
+{
+  "name": "e-commerce-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.30.0",
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "mercadopago": "^2.12.0",
+    "micro-method-router": "^0.1.0",
+    "next": "^16.1.6",
+    "pg": "^8.18.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.7",
+    "yup": "^1.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "25.2.3",
+    "@types/react": "19.2.14",
+    "ava": "^6.4.1",
+    "tsx": "^4.21.0",
+    "typescript": "5.9.3"
+  }
+}
