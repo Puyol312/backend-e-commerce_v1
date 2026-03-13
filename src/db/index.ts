@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import pg from "pg"
+import pg from "pg";
 
 if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL is not defined in .env");
@@ -16,11 +16,21 @@ let isSync = false;
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log("DB connected");
+    console.table([
+      {
+        message: "Database connected",
+        description: "The connection of Sequelize was successfully completed",
+      }
+    ]);
     if (isSync) return;
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ alter: true });
     isSync = true;
-    console.log("DB sync");
+    console.table([
+      {
+        message: "Database schema synchronized",
+        description: "The database schema was successfully synchronized with the Sequelize models",
+      }
+    ]);
   } catch (error) {
     console.error("DB connection or sync error:", error);
   }

@@ -5,7 +5,7 @@ class Product extends Model { }
 
 Product.init(
   {
-    title: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -17,11 +17,11 @@ Product.init(
       }
     },
     description: {
-      type: DataTypes.STRING(1000),
+      type: DataTypes.TEXT,
       allowNull: true
     },
-    image: {
-      type: DataTypes.STRING,
+    img: {
+      type: DataTypes.TEXT,
       allowNull: true
     },
     stock: {
