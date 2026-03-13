@@ -13,8 +13,8 @@ let patchBodySchema = yup.object().shape({
 .strict()
 .noUnknown()
 
-async function getHandler(req:NextApiRequest, res:NextApiResponse, userId:number) {
-  const user = await findUserById(userId);
+async function getHandler(req:NextApiRequest, res:NextApiResponse) {
+  const user = await findUserById((req as any).user.id);
   if (!user) { 
     return res.status(404).json({
       message: "Usuario no encontrado"
@@ -27,7 +27,7 @@ async function getHandler(req:NextApiRequest, res:NextApiResponse, userId:number
     role: user.get("role"),
   });
 }
-async function patchHandler(req: NextApiRequest, res: NextApiResponse, userId: number) {
+async function patchHandler(req: NextApiRequest, res: NextApiResponse) {
   let firstName: string | undefined;
   let lastName: string | undefined;
   let email: string | undefined;
@@ -42,7 +42,7 @@ async function patchHandler(req: NextApiRequest, res: NextApiResponse, userId: n
   }
 
   try {
-    const user = await findUserById(userId);
+    const user = await findUserById((req as any).user.id);
     if (!user) {
       return res.status(404).json({
         message: "User not found"
