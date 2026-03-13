@@ -14,6 +14,8 @@
   "license": "ISC",
   "packageManager": "pnpm@10.30.0",
   "dependencies": {
+    "airtable": "^0.12.2",
+    "algoliasearch": "^5.49.1",
     "date-fns": "^4.1.0",
     "jsonwebtoken": "^9.0.3",
     "mercadopago": "^2.12.0",
@@ -22,6 +24,7 @@
     "pg": "^8.18.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7",
+    "signale": "^1.4.0",
     "yup": "^1.7.1"
   },
   "devDependencies": {
