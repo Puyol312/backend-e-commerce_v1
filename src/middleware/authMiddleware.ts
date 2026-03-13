@@ -4,7 +4,7 @@ import { getTokenFromRequest } from "../lib/getTokenFromReq";
 import { decodeJWT } from "../lib/jwt_utils";
 
 export function authMiddleware(
-  callback: (req:NextApiRequest, res:NextApiResponse, userId: number) => Promise<void>
+  callback: (req:NextApiRequest, res:NextApiResponse) => Promise<void>
 ) { 
   return async (req: NextApiRequest, res: NextApiResponse) => { 
     const token = getTokenFromRequest(req);
@@ -23,7 +23,8 @@ export function authMiddleware(
           message: "Token expirado"
         })
       }
-      return await callback(req, res, Number(userId));
+      (req as any).user = { id:userId };
+      return await callback(req, res);
     } catch (error) {
       return res.status(401).json({
         message: "Token invalido o falso"
