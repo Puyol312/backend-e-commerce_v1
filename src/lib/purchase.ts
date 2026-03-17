@@ -1,4 +1,5 @@
-import { Purchase } from "../db/model";
+import { Purchase, User } from "../db/model";
+import { sendMail, MailType } from "./sendMail";
 
 type PurchaseCreateOptions = {
   from: string;
@@ -14,11 +15,18 @@ type PurchaseCreateOptions = {
 export async function createNewPurchase(
   { from, userId ,message, products }: PurchaseCreateOptions
 ): Promise<number> {
+
+  const amount = products.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
   const newPurchase = await Purchase.create({
     from,
     message,
     date: new Date(),
-    userId
+    userId,
+    amount
   });
 
   //genera mucho ruido.
@@ -44,14 +52,27 @@ export async function createNewPurchase(
 }
 
 export async function confirmPurchase(purchaseId: string) {
-  const purchase = await Purchase.findByPk(Number(purchaseId));
-
+  const purchase = await Purchase.findByPk(Number(purchaseId), {
+    include: {
+      model: User,
+      attributes: ["email"]
+    }
+  });;
   if (!purchase) {
     throw new Error("Purchase not found");
+  }
+  
+  const email = (purchase as any).User?.email;
+  if (!email) {
+    throw new Error("User email not found");
   }
 
   await purchase.update({
     status: "paid",
+  });
+  await sendMail({
+    type: MailType.paid,
+    to: [email]
   });
 
   return purchase;
