@@ -20,6 +20,6 @@ async function postHandler(req:NextApiRequest, res:NextApiResponse) {
   return res.json({ received: true });
 }
 
-methods({
+export default methods({
   post: postHandler
 })
