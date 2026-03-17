@@ -34,10 +34,14 @@ function productMiddleware(
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
   const user = await User.findByPk((req as any).user.id);
   const { message } = req.body;
+
+  console.log("==========================================================================");
+  console.log((req as any).products);
+  console.log("==========================================================================");
   try {
     const { url } = await createNewPayment({
       userId: (req as any).user.id,
-      from: user.get("name") as string,
+      from: user.get("firstName") as string,
       message,
       products: (req as any).products
     });
@@ -52,6 +56,6 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-methods({
+export default methods({
   post: authMiddleware(productMiddleware(postHandler)),
 });

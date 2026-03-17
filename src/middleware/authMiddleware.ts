@@ -11,7 +11,7 @@ export function authMiddleware(
 
     if (!token) { 
       return res.status(401).json({
-        message: "Bearer token faltante."
+        message: "Missing bearer token."
       });
     }
 
@@ -20,14 +20,14 @@ export function authMiddleware(
 
       if (Date.now() > timestamp) { 
         return res.status(401).json({
-          message: "Token expirado"
+          message: "Expired token"
         })
       }
       (req as any).user = { id:userId };
       return await callback(req, res);
     } catch (error) {
       return res.status(401).json({
-        message: "Token invalido o falso"
+        message: "Invalid token or missing"
       })
     }
   }

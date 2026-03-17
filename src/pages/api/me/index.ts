@@ -21,10 +21,12 @@ async function getHandler(req:NextApiRequest, res:NextApiResponse) {
     })
   }
   return res.json({
-    firstName: user.get("firstName"),
-    lastName: user.get("lastName") || "no definido",
-    email: user.get("email"),
-    role: user.get("role"),
+    data: {
+      firstName: user.get("firstName"),
+      lastName: user.get("lastName") || "undefined",
+      email: user.get("email"),
+      role: user.get("role"),
+    }
   });
 }
 async function patchHandler(req: NextApiRequest, res: NextApiResponse) {
