@@ -5,24 +5,20 @@ import { client } from "../../../lib/algolia";
 
 async function getHandler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
-  console.log(id);
-  if (!id) { 
-    res.status(400).json({
-      message: "id parameter is required",
-    });
+  if (!id || Array.isArray(id)) {
+    return res.status(400).json({ error: "Invalid id" });
   }
-  const product = await client.getObject({
-    indexName: "products",
-    objectID: String(id),
-  });
-  if (!product) { 
-    res.status(404).json({
-      message: "Product not found"
+  try {
+    const product = await client.getObject({
+      indexName: "products",
+      objectID: String(id),
     });
+    return res.json({
+      data: product
+    });
+  } catch (error) {
+    return res.status(404).json({ error: "Product not found" });
   }
-  res.json({
-    data: product
-  });
 }
 
 export default methods({

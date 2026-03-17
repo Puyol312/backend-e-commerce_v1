@@ -10,7 +10,7 @@ function isValidField(field: any): field is PatchField {
   return ["email", "firstName", "lastName"].includes(field);
 }
 
-async function patchHandler(req: NextApiRequest, res: NextApiResponse, userId: number) {
+async function patchHandler(req: NextApiRequest, res: NextApiResponse) {
   const { field }  = req.query;
   const { value } = req.body;
 
@@ -19,14 +19,14 @@ async function patchHandler(req: NextApiRequest, res: NextApiResponse, userId: n
       message: "Invalid or missing field parameter",
     });
   }
-  if (value === undefined) {
+  if (value === undefined || !value) {
     return res.status(400).json({
       message: "Missing field value"
     })
   }
   
   try {
-    const user = await findUserById(userId);
+    const user = await findUserById((req as any).user.id);
     await user.update({
       [field]: value
     });
