@@ -1,15 +1,16 @@
 import { Auth } from "../db/model";
 import { addMinutes } from "date-fns/addMinutes";
 import { getRandomNumber } from "../lib/getRandomNumber";
+import { MailType, sendMail } from "../lib/sendMail";
 
 type FindOrCreateAuthOptions = {
   email: string,
   userId: number,
   code: number,
-  expired: Date
+  expires: Date
 }
 
-export async function findOrCreateAuth({ email, userId, code, expired }: FindOrCreateAuthOptions) { 
+export async function findOrCreateAuth({ email, userId, code, expires }: FindOrCreateAuthOptions) { 
   const [newAuth,] = await Auth.findOrCreate({
     where: {
       email,
@@ -19,7 +20,7 @@ export async function findOrCreateAuth({ email, userId, code, expired }: FindOrC
       email,
       userId,
       code,
-      expired
+      expires
     }
   });
 
@@ -28,17 +29,19 @@ export async function findOrCreateAuth({ email, userId, code, expired }: FindOrC
 
 export async function sendAuthToMail({ email, userId }: { email: string, userId: number }) { 
   const now = new Date();
-  const expired = addMinutes(now, 20);
+  const expires = addMinutes(now, 10);
   const code = getRandomNumber(0, 9999)
-  
   const auth = await findOrCreateAuth({
     email,
     code,
-    expired,
+    expires,
     userId
   });
-
-  // sendCode(email, code);
+  sendMail({
+    type: MailType.code,
+    to: [email],
+    code,
+  });
   return auth;
 }
 
