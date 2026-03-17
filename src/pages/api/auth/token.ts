@@ -25,7 +25,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const isValid = await validateAuthCode({ email, code });
     if (!isValid) {
-      return res.status(400).json({
+      return res.status(401).json({
         message: "Code not valid"
       });
     }

@@ -18,7 +18,8 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
       "message": "Código enviado al email"
     });
   } catch (error) {
-    res.status(400).json({
+    console.error(error);
+    return res.status(400).json({
       message: error.message
     })
   }
