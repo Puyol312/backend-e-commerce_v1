@@ -28,7 +28,7 @@ export async function createNewProductPreference(
   return pref.create({
     body: {
       items: options.items.map((product) => ({
-        id: product.productId,
+        id: String(product.productId),
         title: product.productName,
         description: product.productDescription,
         quantity: product.quantity,
