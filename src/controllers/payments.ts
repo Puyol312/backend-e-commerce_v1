@@ -16,7 +16,7 @@ export async function createNewPayment(options: createNewPaymentOptions) {
     userId: options.userId,
     message: options.message || "ningun mensaje asignado",
     products: options.products.map((product) => ({
-      productId: Number(product.productId),
+      productId: product.productId,
       quantity: product.quantity,
       price: product.productPrice,
     }))

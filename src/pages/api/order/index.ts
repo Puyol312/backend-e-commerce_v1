@@ -9,7 +9,7 @@ import { AuthenticatedRequest } from "../../../types";
 
 interface ProductRequest extends AuthenticatedRequest {
   products: {
-    productId: string;
+    productId: number;
     productName: string;
     productDescription: string;
     productPrice: number;
@@ -35,7 +35,7 @@ function productMiddleware(
     const productReq = req as ProductRequest;
 
     productReq.products = [{
-      productId: String(product.id),
+      productId: product.id,
       productName: product.get("name"),
       productDescription: product.get("description") || "not description",
       productPrice: product.get("price"),

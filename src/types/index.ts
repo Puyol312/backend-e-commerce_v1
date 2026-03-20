@@ -3,7 +3,7 @@ import type { NextApiRequest } from "next";
 export type productOptions = {
   productName: string;
   productDescription: string;
-  productId: string;
+  productId: number;
   productPrice: number;
   quantity: number;
 }
