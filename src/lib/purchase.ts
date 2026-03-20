@@ -11,7 +11,6 @@ type PurchaseCreateOptions = {
     price: number
   }[]
 };
-
 export async function createNewPurchase(
   { from, userId ,message, products }: PurchaseCreateOptions
 ): Promise<number> {
@@ -28,8 +27,6 @@ export async function createNewPurchase(
     userId,
     amount
   });
-
-  //genera mucho ruido.
   for (const item of products) {
     await (newPurchase as any).addProduct(item.productId, {
       through: {
@@ -38,26 +35,16 @@ export async function createNewPurchase(
       }
     });
   }
-  // Mejora de lo anterior
-  // await PurchaseProduct.bulkCreate(
-  //   products.map(item => ({
-  //     purchaseId: newPurchase.id,
-  //     productId: item.productId,
-  //     quantity: item.quantity,
-  //     unitPrice: item.price
-  //   }))
-  // );
 
   return newPurchase.get("id");
 }
-
 export async function confirmPurchase(purchaseId: string) {
   const purchase = await Purchase.findByPk(Number(purchaseId), {
     include: {
       model: User,
       attributes: ["email"]
     }
-  });;
+  });
   if (!purchase) {
     throw new Error("Purchase not found");
   }
