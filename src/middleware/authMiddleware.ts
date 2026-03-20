@@ -2,9 +2,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { getTokenFromRequest } from "../lib/getTokenFromReq";
 import { decodeJWT } from "../lib/jwt_utils";
+import { AuthenticatedRequest } from "../types";
 
 export function authMiddleware(
-  callback: (req:NextApiRequest, res:NextApiResponse) => Promise<void>
+  callback: (req:AuthenticatedRequest, res:NextApiResponse) => Promise<void>
 ) { 
   return async (req: NextApiRequest, res: NextApiResponse) => { 
     const token = getTokenFromRequest(req);
@@ -23,8 +24,9 @@ export function authMiddleware(
           message: "Expired token"
         })
       }
-      (req as any).user = { id:userId };
-      return await callback(req, res);
+      const authReq = req as AuthenticatedRequest;
+      authReq.user = { id: Number(userId) };
+      return await callback(authReq, res);
     } catch (error) {
       return res.status(401).json({
         message: "Invalid token or missing"

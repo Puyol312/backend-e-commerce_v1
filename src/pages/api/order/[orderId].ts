@@ -4,8 +4,9 @@ import methods from "micro-method-router";
 import { getPurchaseWithProductsById } from "../../../controllers/payments";
 import { doesPurchaseBelongToUser } from "../../../controllers/payments";
 import { authMiddleware } from "../../../middleware/authMiddleware";
+import { AuthenticatedRequest } from "../../../types";
 
-async function getHandler(req:NextApiRequest, res:NextApiResponse) {
+async function getHandler(req: AuthenticatedRequest, res:NextApiResponse) {
   const { orderId } = req.query;
   if (!orderId) { 
     return res.status(400).json({
@@ -13,7 +14,7 @@ async function getHandler(req:NextApiRequest, res:NextApiResponse) {
     });
   }
   try {
-    const belongsToUser = await doesPurchaseBelongToUser(String(orderId), (req as any).user.id);
+    const belongsToUser = await doesPurchaseBelongToUser(String(orderId), req.user.id);
     if (!belongsToUser) {
       return res.status(404).json({
         message: "Purchase by user not found"

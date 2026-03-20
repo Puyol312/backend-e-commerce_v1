@@ -9,6 +9,6 @@ export type productOptions = {
 }
 export interface AuthenticatedRequest extends NextApiRequest {
   user: {
-    id: string
+    id: number
   }
 }

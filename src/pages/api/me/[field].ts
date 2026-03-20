@@ -5,12 +5,13 @@ import { authMiddleware } from "../../../middleware/authMiddleware";
 import { findUserById } from "../../../controllers/user";
 
 type PatchField = "email" | "firstName" | "lastName";
+import { AuthenticatedRequest } from "../../../types";
 
 function isValidField(field: any): field is PatchField {
   return ["email", "firstName", "lastName"].includes(field);
 }
 
-async function patchHandler(req: NextApiRequest, res: NextApiResponse) {
+async function patchHandler(req: AuthenticatedRequest, res: NextApiResponse) {
   const { field }  = req.query;
   const { value } = req.body;
 
@@ -26,7 +27,7 @@ async function patchHandler(req: NextApiRequest, res: NextApiResponse) {
   }
   
   try {
-    const user = await findUserById((req as any).user.id);
+    const user = await findUserById(req.user.id);
     await user.update({
       [field]: value
     });

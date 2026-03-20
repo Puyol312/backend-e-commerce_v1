@@ -1,7 +1,13 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "..";
 
-class Auth extends Model { }
+class Auth extends Model {
+  declare id: number;
+  declare email: string;
+  declare code: number;
+  declare isValid: boolean;
+  declare expires: Date;
+}
 
 Auth.init(
   {

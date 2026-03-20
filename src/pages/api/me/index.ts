@@ -4,6 +4,8 @@ import yup from "yup";
 
 import { authMiddleware } from "../../../middleware/authMiddleware";
 import { findUserById } from "../../../controllers/user";
+import { AuthenticatedRequest } from "../../../types";
+
 
 let patchBodySchema = yup.object().shape({
   firstName: yup.string(),
@@ -13,8 +15,8 @@ let patchBodySchema = yup.object().shape({
 .strict()
 .noUnknown()
 
-async function getHandler(req:NextApiRequest, res:NextApiResponse) {
-  const user = await findUserById((req as any).user.id);
+async function getHandler(req:AuthenticatedRequest, res:NextApiResponse) {
+  const user = await findUserById(req.user.id);
   if (!user) { 
     return res.status(404).json({
       message: "Usuario no encontrado"
@@ -29,7 +31,7 @@ async function getHandler(req:NextApiRequest, res:NextApiResponse) {
     }
   });
 }
-async function patchHandler(req: NextApiRequest, res: NextApiResponse) {
+async function patchHandler(req: AuthenticatedRequest, res: NextApiResponse) {
   let firstName: string | undefined;
   let lastName: string | undefined;
   let email: string | undefined;
@@ -44,7 +46,7 @@ async function patchHandler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    const user = await findUserById((req as any).user.id);
+    const user = await findUserById(req.user.id);
     if (!user) {
       return res.status(404).json({
         message: "User not found"

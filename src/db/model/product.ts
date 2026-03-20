@@ -1,7 +1,14 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "..";
 
-class Product extends Model { }
+class Product extends Model {
+  declare id: number;
+  declare name: string;
+  declare price: number;
+  declare description?: string;
+  declare img?: string;
+  declare stock: number;
+}
 
 Product.init(
   {

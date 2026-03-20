@@ -5,9 +5,21 @@ import { Product, User } from "../../../db/model";
 import { authMiddleware } from "../../../middleware/authMiddleware";
 import { createNewPayment } from "../../../controllers/payments";
 
+import { AuthenticatedRequest } from "../../../types";
+
+interface ProductRequest extends AuthenticatedRequest {
+  products: {
+    productId: string;
+    productName: string;
+    productDescription: string;
+    productPrice: number;
+    quantity: number;
+  }[];
+}
+
 function productMiddleware(
   callback: (req:NextApiRequest, res:NextApiResponse) => Promise<void>) {
-  return async (req:NextApiRequest, res:NextApiResponse) => { 
+  return async (req:AuthenticatedRequest, res:NextApiResponse) => { 
     const productId = Number(req.query.productId);;
     if (!productId || !Number.isInteger(productId)) { 
       return res.status(400).json({
@@ -20,30 +32,32 @@ function productMiddleware(
         message: "Product not found"
       });
     }
-    (req as any).products = [{
-      productId: product.get("id"),
+    const productReq = req as ProductRequest;
+
+    productReq.products = [{
+      productId: String(product.id),
       productName: product.get("name"),
       productDescription: product.get("description") || "not description",
       productPrice: product.get("price"),
       quantity: 1
-    }]
-    return callback(req, res);
+    }];
+    return callback(productReq, res);
   }
 }
 
-async function postHandler(req: NextApiRequest, res: NextApiResponse) {
-  const user = await User.findByPk((req as any).user.id);
+async function postHandler(req: ProductRequest, res: NextApiResponse) {
+  const user = await User.findByPk(req.user.id);
   const { message } = req.body;
 
   console.log("==========================================================================");
-  console.log((req as any).products);
+  console.log(req.products);
   console.log("==========================================================================");
   try {
     const { url } = await createNewPayment({
-      userId: (req as any).user.id,
+      userId: req.user.id,
       from: user.get("firstName") as string,
       message,
-      products: (req as any).products
+      products: req.products
     });
     return res.json({
       url

@@ -2,7 +2,12 @@ import { DataTypes, Model } from "sequelize";
 import { sequelize } from "..";
 
 class Purchase extends Model {
-  public id!: number;
+  declare id: number;
+  declare from: string;
+  declare amount: number;
+  declare message?: string;
+  declare date: Date;
+  declare status: "pending" | "paid" | "cancelled";
 }
 
 Purchase.init(

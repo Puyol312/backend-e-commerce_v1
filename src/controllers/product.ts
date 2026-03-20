@@ -55,7 +55,7 @@ async function addStockToProduct(quantity: number, id: number) {
 async function removeStockFromProduct(quantity: number, id: number) {
   const product = await Product.findByPk(id);
 
-  if ((product) && ((product as any).stock >= quantity)) {
+  if ((product) && (product.stock >= quantity)) {
     await product.decrement("stock", { by: quantity });
     await product.reload();
     return product;

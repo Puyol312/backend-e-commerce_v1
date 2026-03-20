@@ -3,10 +3,11 @@ import methods from "micro-method-router";
 
 import { authMiddleware } from "../../../middleware/authMiddleware";
 import { getAllPurchaseWithProducts } from "../../../controllers/payments"; 
+import { AuthenticatedRequest } from "../../../types";
 
-async function getHandler(req: NextApiRequest, res: NextApiResponse) { 
+async function getHandler(req: AuthenticatedRequest, res: NextApiResponse) { 
   try {
-    const userPurchases = await getAllPurchaseWithProducts((req as any).user.id);
+    const userPurchases = await getAllPurchaseWithProducts(req.user.id);
     return res.json({
       data: userPurchases,
     });
