@@ -140,6 +140,12 @@ El middleware de auth valida el token y adjunta el usuario a la request antes de
 
 ---
 
+## Documentación de endpoints
+
+Toda la documentacion de los endpoints incluyendo ejemplos de request y response se encuentra en el siguiente enlace a postman:
+
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/47803384-9b63680c-b5de-4913-bf60-1fe11fa1f5bb?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D47803384-9b63680c-b5de-4913-bf60-1fe11fa1f5bb%26entityType%3Dcollection%26workspaceId%3D5b37edfe-3cbb-4ac0-bf7a-7099a142bac4)
+
 ## 📌 Roadmap / Mejoras planificadas
 
 - [ ] Testing con AVA
